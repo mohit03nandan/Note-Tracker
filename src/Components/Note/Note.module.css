@@ -1,0 +1,13 @@
+
+.formControl{
+    margin-top: 200px;
+    width: 650px;
+    position: sticky;
+}
+.send{
+  margin-bottom: 10px;
+}
+.card{
+    margin: 10px;
+    height: 350px;
+}
