@@ -1,14 +1,39 @@
-import React,{useState} from "react";
+import React,{useState , useEffect} from "react";
 import BookMarkCard from "../BookMarkCard/BookMarkCard";
 import Styles from "./Bookmark.module.css";
 
+
+
+
+const getlocalBookMark = () =>{
+  let bookMark = localStorage.getItem("addBookMark");
+  if(bookMark){
+    return JSON.parse(localStorage.getItem('addBookMark'));
+  }
+  else{
+     return [];
+  }
+}
+
+
 const Bookmark = () => {
 const [Bookmark, setBookmark] = useState("")
-const [addBookMark, setaddBookMark] = useState([])
+const [addBookMark, setaddBookMark] = useState(getlocalBookMark())
 
 
 const BookMarkChange = (e) => {
   setBookmark(e.target.value)
+}
+
+const handleKeyDown = (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    setaddBookMark((notes)=>{
+      return(
+        [...notes,  Bookmark]
+      )
+    })
+  }
 }
 
 function submitNote(e){
@@ -20,6 +45,13 @@ function submitNote(e){
   })
 
 }
+
+
+useEffect(() => {
+ 
+  localStorage.setItem('addBookMark', JSON.stringify(addBookMark));
+
+}, [addBookMark]);
 
   return (
     <div>
@@ -44,6 +76,7 @@ function submitNote(e){
               value={Bookmark}
               placeholder="Type a daily BookMark..."
               onChange={BookMarkChange}
+              onKeyDown={handleKeyDown}
 
             />
           </div>

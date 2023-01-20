@@ -1,14 +1,37 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import NoteCard from "../NoteCard/NoteCard";
 import Styles from "./Note.module.css";
 
+
+const getlocalData = () =>{
+  let data = localStorage.getItem("addData");
+  if(data){
+    return JSON.parse(localStorage.getItem('addData'));
+  }
+  else{
+     return [];
+  }
+}
+
 const Note = () => {
 const [note, setNote] = useState("")
-const [addData, setAddData] = useState([])
-
+const [addData, setAddData] = useState(getlocalData())
+console.log("note",note)
+console.log("addData",addData)
 
 const noteChange = (e) => {
-    setNote(e.target.value)
+    setNote(e.target.value)  
+}
+
+const handleKeyDown = (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    setAddData((notes)=>{
+      return(
+        [...notes,  note]
+      )
+    })
+  }
 }
 
 function submitNote(e){
@@ -18,8 +41,15 @@ function submitNote(e){
       [...notes,  note]
     )
   })
-
 }
+
+
+
+useEffect(() => {
+ 
+  localStorage.setItem('addData', JSON.stringify(addData));
+
+}, [addData]);
 
   return (
     <div>
@@ -44,6 +74,7 @@ function submitNote(e){
               value={note}
               placeholder="Type a daily notes..."
               onChange={noteChange}
+              onKeyDown={handleKeyDown}
 
             />
           </div>

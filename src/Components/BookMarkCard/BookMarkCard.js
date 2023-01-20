@@ -4,9 +4,6 @@ const BookMarkCard = (props) => {
 
     var LinkTab = props.pushData1
     console.log("link",LinkTab)
-
-
-
   return (
     <div >
      <div class="card"  >
