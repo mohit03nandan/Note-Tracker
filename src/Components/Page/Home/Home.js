@@ -16,16 +16,17 @@ console.log(view)
    }
 
    
-   function toggleBookmark(){
+   function toggleBookmark(e){
     setView(1);
    }
    
-  const Pagination = () => {
+  const Pagination = (e) => {
     if (view === 0) {
         
       return <Note/>;
     } 
     else if (view === 1) {
+    
       return <Bookmark/>;
     } 
   };
