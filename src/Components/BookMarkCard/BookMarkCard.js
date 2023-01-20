@@ -1,17 +1,19 @@
 import React from 'react'
+import styles from "./BookMarkCard.module.css"
 const BookMarkCard = (props) => {
 
-function link(props){
-    window.open(props.pushData1, 'props.pushData1')
-}
+    var LinkTab = props.pushData1
+    console.log("link",LinkTab)
+
+
 
   return (
     <div >
      <div class="card"  >
-       <div class="card-body" onClick={link}  >
-       {/* <input class="form-control" type="text"  onMouseOver={link} value={props.pushData1} placeholder="Default input"/>  */}
-       
-       {props.pushData1}
+       <div class="card-body" className={styles.cardBody} >
+       <a href={`//${LinkTab}`} target="_blank" rel="noopener noreferrer">
+       <h3> {props.pushData1}</h3>
+      </a>
       </div>
       
     </div>
