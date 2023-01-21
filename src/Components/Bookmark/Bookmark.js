@@ -1,73 +1,95 @@
-import React,{useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import BookMarkCard from "../BookMarkCard/BookMarkCard";
 import Styles from "./Bookmark.module.css";
 
-
-
-
-const getlocalBookMark = () =>{
+const getlocalBookMark = () => {
   let bookMark = localStorage.getItem("addBookMark");
-  if(bookMark){
-    return JSON.parse(localStorage.getItem('addBookMark'));
+  if (bookMark) {
+    return JSON.parse(localStorage.getItem("addBookMark"));
+  } else {
+    return [];
   }
-  else{
-     return [];
-  }
-}
-
+};
 
 const Bookmark = () => {
-const [Bookmark, setBookmark] = useState("")
-const [addBookMark, setaddBookMark] = useState(getlocalBookMark())
+  const [Bookmark, setBookmark] = useState("");
+  const [addBookMark, setaddBookMark] = useState(getlocalBookMark());
 
+  const BookMarkChange = (e) => {
+    setBookmark(e.target.value);
+  };
 
-const BookMarkChange = (e) => {
-  setBookmark(e.target.value)
-}
+  var d = new Date();
 
-const handleKeyDown = (e) => {
-  if (e.key === 'Enter') {
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setaddBookMark((notes) => {
+        return [
+          ...notes,
+          {
+            Bookmark: Bookmark,
+            id:
+              d.getDate() +
+              "-" +
+              (d.getMonth() + 1) +
+              "-" +
+              d.getFullYear() +
+              " " +
+              d.getHours() +
+              ":" +
+              d.getMinutes(),
+          },
+        ];
+      });
+    }
+  };
+
+  function submitNote(e) {
     e.preventDefault();
-    setaddBookMark((notes)=>{
-      return(
-        [...notes,  Bookmark]
-      )
-    })
+    setaddBookMark((notes) => {
+      return [
+        ...notes,
+        {
+          Bookmark: Bookmark,
+          id:
+            d.getDate() +
+            "-" +
+            (d.getMonth() + 1) +
+            "-" +
+            d.getFullYear() +
+            " " +
+            d.getHours() +
+            ":" +
+            d.getMinutes(),
+        },
+      ];
+    });
   }
-}
 
-function submitNote(e){
-  e.preventDefault();
-  setaddBookMark((bookmarks)=>{
-    return(
-      [...bookmarks,  Bookmark]
-    )
-  })
-
-}
-
-
-useEffect(() => {
- 
-  localStorage.setItem('addBookMark', JSON.stringify(addBookMark));
-
-}, [addBookMark]);
+  useEffect(() => {
+    localStorage.setItem("addBookMark", JSON.stringify(addBookMark));
+  }, [addBookMark]);
 
   return (
     <div>
       <div className={Styles.card}>
-      {addBookMark.map((val,index)=>{
-       
-          return <BookMarkCard
-                pushData1 = {val}
-          />
-          
+        {addBookMark.map((val, index) => {
+          return <BookMarkCard pushData1={val.Bookmark} pushData2={val.id} />;
         })}
-      
       </div>
 
       <div className={Styles.formControl}>
-        <div class="row">
+        <div
+          class="row"
+          style={{
+            height: "60px",
+            backgroundColor: " #FFFFFF",
+            marginRight: "10px",
+            paddingTop: "10px",
+            borderRadius: "9.16667px",
+          }}
+        >
           <div class="col-10">
             <input
               class="form-control"
@@ -77,11 +99,11 @@ useEffect(() => {
               placeholder="Type a daily BookMark..."
               onChange={BookMarkChange}
               onKeyDown={handleKeyDown}
-
+              style={{ background: "#E1E1E1", borderRadius: "9.16667px" }}
             />
           </div>
           <div class="col-1">
-            <button class="btn btn-success" onClick={submitNote} >
+            <button class="btn btn-success" onClick={submitNote}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
@@ -98,6 +120,6 @@ useEffect(() => {
       </div>
     </div>
   );
-}; 
+};
 
 export default Bookmark;

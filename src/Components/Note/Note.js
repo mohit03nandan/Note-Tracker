@@ -1,72 +1,98 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import NoteCard from "../NoteCard/NoteCard";
 import Styles from "./Note.module.css";
 
-
-const getlocalData = () =>{
+const getlocalData = () => {
   let data = localStorage.getItem("addData");
-  if(data){
-    return JSON.parse(localStorage.getItem('addData'));
+  if (data) {
+    return JSON.parse(localStorage.getItem("addData"));
+  } else {
+    return [];
   }
-  else{
-     return [];
-  }
-}
+};
 
 const Note = () => {
-const [note, setNote] = useState("")
-const [addData, setAddData] = useState(getlocalData())
-console.log("note",note)
-console.log("addData",addData)
+  const [note, setNote] = useState("");
+  const [addData, setAddData] = useState(getlocalData());
 
-const noteChange = (e) => {
-    setNote(e.target.value)  
-}
+  const noteChange = (e) => {
+    setNote(e.target.value);
+  };
 
-const handleKeyDown = (e) => {
-  if (e.key === 'Enter') {
+  var d = new Date();
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setAddData((notes) => {
+        return [
+          ...notes,
+          {
+            note: note,
+            id:
+              d.getDate() +
+              "-" +
+              (d.getMonth() + 1) +
+              "-" +
+              d.getFullYear() +
+              " " +
+              d.getHours() +
+              ":" +
+              d.getMinutes(),
+          },
+        ];
+      });
+    }
+  };
+
+  function submitNote(e) {
     e.preventDefault();
-    setAddData((notes)=>{
-      return(
-        [...notes,  note]
-      )
-    })
+    setAddData((notes) => {
+      return [
+        ...notes,
+        {
+          note: note,
+          id:
+            d.getDate() +
+            "-" +
+            (d.getMonth() + 1) +
+            "-" +
+            d.getFullYear() +
+            " " +
+            d.getHours() +
+            ":" +
+            d.getMinutes(),
+        },
+      ];
+    });
   }
-}
 
-function submitNote(e){
-  e.preventDefault();
-  setAddData((notes)=>{
-    return(
-      [...notes,  note]
-    )
-  })
-}
-
-
-
-useEffect(() => {
- 
-  localStorage.setItem('addData', JSON.stringify(addData));
-
-}, [addData]);
+  useEffect(() => {
+    localStorage.setItem("addData", JSON.stringify(addData));
+  }, [addData]);
 
   return (
     <div>
       <div className={Styles.card}>
-      {addData.map((val,index)=>{
-       
-          return <NoteCard
-                pushData1 = {val}
-          />
-          
+        {addData.map((val, index) => {
+          return <NoteCard pushData1={val.note} pushData2={val.id} />;
         })}
-      
       </div>
 
       <div className={Styles.formControl}>
-        <div class="row">
+        <div
+          class="row"
+          style={{
+            height: "60px",
+            backgroundColor: " #FFFFFF",
+            marginRight: "10px",
+            paddingTop: "10px",
+            borderRadius: "9.16667px",
+            marginBottom: "10px",
+          }}
+        >
           <div class="col-10">
+            {/* <div class="card"> */}
             <input
               class="form-control"
               type="text"
@@ -75,11 +101,12 @@ useEffect(() => {
               placeholder="Type a daily notes..."
               onChange={noteChange}
               onKeyDown={handleKeyDown}
-
+              style={{ background: "#E1E1E1", borderRadius: "9.16667px" }}
             />
+            {/* </div> */}
           </div>
           <div class="col-1">
-            <button class="btn btn-success" onClick={submitNote} >
+            <button class="btn btn-success" onClick={submitNote}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
