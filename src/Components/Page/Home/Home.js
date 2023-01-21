@@ -34,7 +34,8 @@ const Home = () => {
                       <i
                         class="far fa-edit"
                         style={{ color: "yellow", fontSize: "38px" }}
-                      ></i>
+                        alt="image"
+                      > </i>
                     </div>
                     <div class="col-9" style={{ color: "white" }}>
                       Daily Note Tracker
